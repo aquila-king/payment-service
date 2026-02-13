@@ -1,0 +1,13 @@
+@Library('shared-lib') _
+
+deployMicroservice(
+    repoUrl: 'https://github.com/aquila-king/payment-service.git',
+    imageName: 'kuunyangna/payment-service',
+    namespace: 'payment-namespace',
+    helmChart: './helm',
+    helmRelease: 'payment-release',
+    dockerCreds: 'docker-cred',
+    jdk: 'jdk',
+    maven: 'mvn',
+    branch: 'main'
+)
