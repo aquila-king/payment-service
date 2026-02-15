@@ -1,11 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-svc   # Adds "-svc" to match the pipeline
+  name: {{ .Release.Name }}          # Release name, e.g., order-release-blue
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
 spec:
-  type: {{ .Values.service.type | default "LoadBalancer" }}
+  type: LoadBalancer                  # This tells Kubernetes to provision a cloud LB
   selector:
-    app: {{ .Release.Name }}      # Matches pod labels created by Helm release
+    app: {{ .Release.Name }}          # Must match Deployment labels
   ports:
-    - port: {{ .Values.service.port | default 80 }}
-      targetPort: {{ .Values.service.port | default 8080 }}
+    - name: http
+      port: {{ .Values.service.port | default 8080 }}      # External LB port
+      targetPort: {{ .Values.service.port | default 8080 }} # Container port
