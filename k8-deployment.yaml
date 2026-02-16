@@ -1,21 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: payment-service-deployment
+  name: payment-deployment
+  namespace: payment-namespace
   labels:
-    app: payment-service
+    app: payment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: payment-service
+      app: payment
   template:
     metadata:
       labels:
-        app: payment-service
+        app: payment
     spec:
       containers:
-      - name: payment-service-container
+      - name: payment-container
         image: kuunyangna/payment-service:v2
         imagePullPolicy: Always
         ports:
