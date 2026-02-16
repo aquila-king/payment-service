@@ -3,6 +3,6 @@
 deployMicroservice(
     repoUrl: 'https://github.com/aquila-king/payment-service.git', 
     imageName: 'payment-service', 
-    namespace: 'payment-namespace'
+    namespace: 'payment-namespace',
     clusterName: 'aquila-cluster'
 )
