@@ -3,14 +3,13 @@ kind: Service
 metadata:
   name: payment-service
   namespace: payment-namespace
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /
 spec:
   type: LoadBalancer
   selector:
-    app: payment-service  # must match pod labels
+    app: payment-service
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-  # optional AWS ALB health check
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /
+    - protocol: TCP
+      port: 80
+      targetPort: 80
