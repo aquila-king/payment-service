@@ -6,8 +6,11 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: payment
+    app: payment-service  # must match pod labels
   ports:
   - protocol: TCP
     port: 80
     targetPort: 80
+  # optional AWS ALB health check
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /
