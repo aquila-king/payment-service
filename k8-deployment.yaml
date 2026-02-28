@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: payment-service-deployment       # matches ${imageName}-deployment
+  name: payment-service-deployment
   namespace: payment-namespace
   labels:
-    app: payment-service                 # matches service selector
+    app: payment-service
 spec:
   replicas: 2
   selector:
@@ -16,7 +16,7 @@ spec:
         app: payment-service
     spec:
       containers:
-      - name: payment-service-container  # matches ${imageName}-container
+      - name: payment-service-container
         image: kuunyangna/payment-service:v1
         ports:
         - containerPort: 80
@@ -32,3 +32,30 @@ spec:
             port: 80
           initialDelaySeconds: 15
           periodSeconds: 20
+        resources:
+          requests:
+            cpu: "250m"      # minimum CPU guaranteed
+            memory: "256Mi"  # minimum memory guaranteed
+          limits:
+            cpu: "500m"      # maximum CPU allowed
+            memory: "512Mi"  # maximum memory allowed
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: payment-service-hpa
+  namespace: payment-namespace
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: payment-service-deployment
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
